@@ -1,8 +1,10 @@
 package com.solution;
 
 import weka.core.Instances;
-
-
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.ReplaceMissingValues;
+import weka.filters.unsupervised.attribute.ReplaceWithMissingValue;
+import weka.filters.unsupervised.attribute.Standardize;
 import weka.core.converters.ConverterUtils.DataSource;
 
 import org.apache.commons.math.stat.correlation.*;
@@ -71,15 +73,10 @@ public class App
         // checkCorrelation(data);
         //Highly correlated features removed
 
-        
 
-        for(int i = 1; i<data.numAttributes()-1; i++){
-            System.out.println(i+" "+ data.attributeStats(i).distinctCount);
-        }
-
-        //checking sharp increase in variance
         //replacing missing values
-        //class balance & sampling
 
+        //class balance & sampling
+        System.out.println(data.attributeStats(31));
     }
 }
