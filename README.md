@@ -24,3 +24,7 @@ The provided dataset contains java methods and features extracted for each metho
 # Cross Validation:
 
 * 
+
+
+# Reference:
+[1]. Prasetiyowati, M.I., Maulidevi, N.U. & Surendro, K. Determining threshold value on information gain feature selection to increase speed and prediction accuracy of random forest. J Big Data 8, 84 (2021). https://doi.org/10.1186/s40537-021-00472-4
