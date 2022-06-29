@@ -29,7 +29,7 @@ The provided dataset contains java methods and features extracted for each metho
 # Modelling &  Hyper Parameter Tuning
 
 * The provided task is a classification problem. Hence, an Instance based KNN classifier is used for classifying the test data.
-* The hyper-parameter of KNN i.e. k is tuned for the maximum f1-score. The results of the evaluation are as follow:
+* The hyper-parameter of KNN i.e. k is tuned for the maximum f1-score. The results of the evaluation are as follow: <br>
 k:f1-score <br>
 2:0.867683169833834 <br>
 3:0.8539488719682348 <br>
@@ -42,7 +42,7 @@ k:f1-score <br>
 10:0.8237384078152002 <br>
 
 # Results: 
-*10-Fold Cross Validation*
+*10-Fold Cross Validation* <br>
 Iteration: f1-score <br>
 0:0.8852459016393444 <br>
 1:0.8662790697674418 <br>
