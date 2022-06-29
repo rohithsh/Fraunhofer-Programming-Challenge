@@ -4,7 +4,7 @@ import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
 import weka.classifiers.Classifier;
-import weka.classifiers.functions.LibSVM;
+import weka.classifiers.lazy.IBk;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.filters.Filter;
@@ -15,7 +15,6 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.supervised.instance.SMOTE;
 
 import org.apache.commons.math.stat.correlation.*;
-import org.netlib.util.doubleW;
 
 
 public class App 
@@ -50,10 +49,14 @@ public class App
         return new Instances[] {trainSet, testSet};
         
     }
+
+
     public static void main( String[] args ) throws Exception
     {
+        //Loading the dataset
         DataSource source = new DataSource("data.arff");
         Instances data = source.getDataSet();
+
 
         // //Checking for String values
         for(int i = 1; i<data.numAttributes()-1; i++){
@@ -62,6 +65,7 @@ public class App
             }
         }
         // //No String values found
+
 
         // //Removing attributes with constant values
         // for(int i=1; i<data.numAttributes()-1; i++){
@@ -81,6 +85,7 @@ public class App
             }
         }
         // //No nominal features were found!
+
 
         // //Handling Null Values    
         // for(int i=1; i<data.numAttributes()-1; i++){
@@ -118,25 +123,29 @@ public class App
         data = attSelect.reduceDimensionality(data);
         // System.out.println(attSelect.toResultsString());
 
+
         // //class balance & sampling
         // System.out.println(data.attributeStats(data.numAttributes()-1));
         // // Class imbalance is noted; class 0: 275 & class 1: 122
 
         // //Modelling
         data.setClassIndex(data.numAttributes()-1);
-        Classifier clf = new LibSVM();
+        Classifier clf = new IBk(2);
         double tp =0, fp=0, fn=0, tn = 0;
         double precision=0, recall=0, fScore = 0;
         int kFolds = 10;
-        for(int k=0; k<kFolds; k++){
+        
+
+            // // 10-fold cross validation
+        for(int k=0; k<kFolds; k++){    
             Randomize randomizer = new Randomize();
             randomizer.setInputFormat(data);
             randomizer.setRandomSeed(400);
-            data = Filter.useFilter(data, randomizer);
+            data = Filter.useFilter(data, randomizer);    
             Instances[] splitData = trainTestSplit(data);
             Instances trainSet = splitData[0];
             Instances testSet = splitData[1];
-            // //Minority over sampling
+            //Minority over sampling
             SMOTE smote = new SMOTE();
             smote.setInputFormat(trainSet);
             trainSet = Filter.useFilter(trainSet, smote);
@@ -155,15 +164,14 @@ public class App
                     tn++;
                 }
             }
-            if (tn + fn > 0)
-                precision = tn / (tn + fn);
-            if (tn + fp > 0)
-                recall = tn / (tn + fp);
+            if (tp + fp > 0)
+                precision = tp / (tp + fp);
+            if (tp + fn > 0)
+                recall = tp / (tp + fn);
             if (precision + recall > 0)
                 fScore += 2 * precision * recall / (precision + recall);
-
+            // System.out.println("ACC:"+ (tp+tn)/(tp+tn+fp+fn));
         }
-        System.out.println("FScore:"+fScore);
-        
+        System.out.println(fScore/10);
     }
 }

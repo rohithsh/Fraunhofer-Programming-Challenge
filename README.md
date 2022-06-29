@@ -19,12 +19,43 @@ The provided dataset contains java methods and features extracted for each metho
 
 # Class Imbalance:
 
-* It is noted that the data distribution in the target class is not balanced. This may induce a bias in the model. Hence, the imbalance is handeled using SMOTE(Synthetic Minority Oversampling Technique). Over sampling is performed for each training set during 10-fold cross validation.
+* It is noted that the data distribution in the target class is not balanced. This may induce a bias in the model. Hence, the imbalance is handeled using *SMOTE*(Synthetic Minority Oversampling Technique). Over sampling is performed for each training set during 10-fold cross validation.
 
 # Train-Test Split & Cross Validation:
 
-* 
+* A train-test ratio of 70:30 is used for evaluating the model.
+* A 10-fold cross validation is performed on the model. During each iteration, the minority class in trained data is over sampled using SMOTE.
 
+# Modelling &  Hyper Parameter Tuning
+
+* The provided task is a classification problem. Hence, an Instance based KNN classifier is used for classifying the test data.
+* The hyper-parameter of KNN i.e. k is tuned for the maximum f1-score. The results of the evaluation are as follow:
+k:f1-score
+2:0.867683169833834
+3:0.8539488719682348
+4:0.8333775339383818
+5:0.8080655521979032
+6:0.8379608856343255
+7:0.8165438701284291
+8:0.846577308681724
+9:0.8519795860028123
+10:0.8237384078152002
+
+# Results: 
+*10-Fold Cross Validation*
+Iteration: f1-score
+0:0.8852459016393444
+1:0.8662790697674418
+2:0.8549019607843138
+3:0.8651026392961876
+4:0.8716136631330977
+5:0.8669950738916257
+6:0.867003367003367
+7:0.8653421633554084
+8:0.8665351742274818
+9:0.8678126852400712
+
+**Average f1-score**: 0.867683169833834
 
 # Reference:
 [1]. Prasetiyowati, M.I., Maulidevi, N.U. & Surendro, K. Determining threshold value on information gain feature selection to increase speed and prediction accuracy of random forest. J Big Data 8, 84 (2021). https://doi.org/10.1186/s40537-021-00472-4
