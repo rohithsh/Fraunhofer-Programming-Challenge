@@ -24,7 +24,7 @@ The provided dataset contains java methods and features extracted for each metho
 # Train-Test Split & Cross Validation:
 
 * A train-test ratio of 70:30 is used for evaluating the model.
-* A 10-fold cross validation is performed on the model. During each iteration, the minority class in trained data is over sampled using SMOTE.
+* A 10-fold cross validation is performed on the model. During each iteration, the minority class in training data is over sampled using SMOTE.
 
 # Modelling &  Hyper Parameter Tuning
 
