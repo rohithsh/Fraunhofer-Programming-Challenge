@@ -112,7 +112,7 @@ public class App
         attSelect.setRanking(true);
         attSelect.SelectAttributes(data);
         data = attSelect.reduceDimensionality(data);
-        // System.out.println(attSelect.toResultsString());
+        System.out.println(attSelect.toResultsString());
 
         // //class balance & sampling
         // System.out.println(data.attributeStats(data.numAttributes()-1));
