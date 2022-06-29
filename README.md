@@ -31,7 +31,7 @@ The provided dataset contains java methods and features extracted for each metho
 * The provided task is a classification problem. Hence, an Instance based KNN classifier is used for classifying the test data.
 * The hyper-parameter of KNN i.e. k is tuned for the maximum f1-score. The results of the evaluation are as follow: <br>
 k:f1-score <br>
-2:0.867683169833834 <br>
+*2:0.867683169833834* <br>
 3:0.8539488719682348 <br>
 4:0.8333775339383818 <br>
 5:0.8080655521979032 <br>
@@ -41,6 +41,7 @@ k:f1-score <br>
 9:0.8519795860028123 <br>
 10:0.8237384078152002 <br>
 
+k = 2 is selected as the hyper-parameter of choice.
 # Results: 
 *10-Fold Cross Validation* <br>
 Iteration: f1-score <br>
@@ -55,7 +56,7 @@ Iteration: f1-score <br>
 8:0.8665351742274818 <br>
 9:0.8678126852400712 <br>
 
-**Average f1-score**: 0.867683169833834
+**Average f1-score**: *0.867683169833834*
 
 # Reference:
 [1]. Prasetiyowati, M.I., Maulidevi, N.U. & Surendro, K. Determining threshold value on information gain feature selection to increase speed and prediction accuracy of random forest. J Big Data 8, 84 (2021). https://doi.org/10.1186/s40537-021-00472-4
