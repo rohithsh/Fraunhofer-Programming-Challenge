@@ -3,6 +3,9 @@ package com.solution;
 import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.InfoGainAttributeEval;
 import weka.attributeSelection.Ranker;
+import weka.classifiers.Classifier;
+import weka.classifiers.functions.LibSVM;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
@@ -12,6 +15,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.supervised.instance.SMOTE;
 
 import org.apache.commons.math.stat.correlation.*;
+import org.netlib.util.doubleW;
 
 
 public class App 
@@ -112,7 +116,7 @@ public class App
         attSelect.setRanking(true);
         attSelect.SelectAttributes(data);
         data = attSelect.reduceDimensionality(data);
-        System.out.println(attSelect.toResultsString());
+        // System.out.println(attSelect.toResultsString());
 
         // //class balance & sampling
         // System.out.println(data.attributeStats(data.numAttributes()-1));
@@ -120,7 +124,9 @@ public class App
 
         // //Modelling
         data.setClassIndex(data.numAttributes()-1);
-        double tp, fp, fn, tn = 0;
+        Classifier clf = new LibSVM();
+        double tp =0, fp=0, fn=0, tn = 0;
+        double precision=0, recall=0, fScore = 0;
         int kFolds = 10;
         for(int k=0; k<kFolds; k++){
             Randomize randomizer = new Randomize();
@@ -134,18 +140,30 @@ public class App
             SMOTE smote = new SMOTE();
             smote.setInputFormat(trainSet);
             trainSet = Filter.useFilter(trainSet, smote);
-
+            clf.buildClassifier(trainSet);
+            for(int i=0; i<testSet.numInstances(); i++){
+                Instance instance = testSet.instance(i);
+                double testClass = instance.classValue();
+                double predClass = clf.classifyInstance(instance);
+                if (predClass == 0.0 && testClass == 0.0) {
+                    tp++;
+                } else if (predClass == 0.0 && testClass == 1.0) {
+                    fp++;
+                } else if (predClass == 1.0 && testClass == 0.0) {
+                    fn++;
+                } else if (predClass == 1.0 && testClass == 1.0) {
+                    tn++;
+                }
+            }
+            if (tn + fn > 0)
+                precision = tn / (tn + fn);
+            if (tn + fp > 0)
+                recall = tn / (tn + fp);
+            if (precision + recall > 0)
+                fScore += 2 * precision * recall / (precision + recall);
 
         }
-        
-
-        
-
-        
-        // for(int i=0; i<fold; i++){
-
-
-        // }
+        System.out.println("FScore:"+fScore);
         
     }
 }
