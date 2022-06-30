@@ -36,16 +36,16 @@ public class App
         }
     }
 
-    public static Instances[] trainTestSplit(Instances data) throws Exception {
-        RemovePercentage rp = new RemovePercentage();
-        rp.setInputFormat(data);
-        rp.setPercentage(30);
-        Instances trainSet = Filter.useFilter(data, rp);
-        rp = new RemovePercentage();
-        rp.setInputFormat(data);
-        rp.setPercentage(30);
-        rp.setInvertSelection(true);
-        Instances testSet = Filter.useFilter(data, rp);
+    public static Instances[] trainTestSplit(Instances data, int trainRatio) throws Exception {
+        RemovePercentage percentageFilter = new RemovePercentage();
+        percentageFilter.setInputFormat(data);
+        percentageFilter.setPercentage(100-trainRatio);
+        Instances trainSet = Filter.useFilter(data, percentageFilter);
+        percentageFilter = new RemovePercentage();
+        percentageFilter.setInputFormat(data);
+        percentageFilter.setPercentage(trainRatio);
+        percentageFilter.setInvertSelection(true);
+        Instances testSet = Filter.useFilter(data, percentageFilter);
         return new Instances[] {trainSet, testSet};
         
     }
@@ -92,9 +92,9 @@ public class App
         //     System.out.println(i+" "+data.attributeStats(i));
         // }
         // //Null values are present in attribute(4)
-        ReplaceMissingValues replace = new ReplaceMissingValues();
-        replace.setInputFormat(data);
-        data = Filter.useFilter(data, replace);
+        ReplaceMissingValues replaceNull = new ReplaceMissingValues();
+        replaceNull.setInputFormat(data);
+        data = Filter.useFilter(data, replaceNull);
         // // Null values are replaced with mean
 
 
@@ -134,6 +134,7 @@ public class App
         double tp =0, fp=0, fn=0, tn = 0;
         double precision=0, recall=0, fScore = 0;
         int kFolds = 10;
+        int trainRatio = 70;
         
 
             // // 10-fold cross validation
@@ -142,7 +143,7 @@ public class App
             randomizer.setInputFormat(data);
             randomizer.setRandomSeed(400);
             data = Filter.useFilter(data, randomizer);    
-            Instances[] splitData = trainTestSplit(data);
+            Instances[] splitData = trainTestSplit(data, trainRatio);
             Instances trainSet = splitData[0];
             Instances testSet = splitData[1];
             //Minority over sampling
@@ -171,7 +172,8 @@ public class App
             if (precision + recall > 0)
                 fScore += 2 * precision * recall / (precision + recall);
             // System.out.println("ACC:"+ (tp+tn)/(tp+tn+fp+fn));
+            //System.out.println(k+":"+ fScore);
         }
-        System.out.println(fScore/10);
+        System.out.println("F1-Score: "+fScore/10);
     }
 }
