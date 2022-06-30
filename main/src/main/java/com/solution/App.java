@@ -43,7 +43,7 @@ public class App
         Instances trainSet = Filter.useFilter(data, percentageFilter);
         percentageFilter = new RemovePercentage();
         percentageFilter.setInputFormat(data);
-        percentageFilter.setPercentage(trainRatio);
+        percentageFilter.setPercentage(100-trainRatio);
         percentageFilter.setInvertSelection(true);
         Instances testSet = Filter.useFilter(data, percentageFilter);
         return new Instances[] {trainSet, testSet};
@@ -146,6 +146,7 @@ public class App
             Instances[] splitData = trainTestSplit(data, trainRatio);
             Instances trainSet = splitData[0];
             Instances testSet = splitData[1];
+            // System.out.println(testSet.numInstances()+":"+trainSet.numInstances());
             //Minority over sampling
             SMOTE smote = new SMOTE();
             smote.setInputFormat(trainSet);
